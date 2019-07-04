@@ -1964,7 +1964,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     editForm: function editForm(item) {
-      this.editActive = false;
+      this.editActive = true;
       this.homework.nombre = item.nombre;
       this.homework.descripcion = item.descripcion;
       this.homework.id = item.id;
@@ -1987,13 +1987,22 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     deleteHomework: function deleteHomework(item, index) {
+      var _this4 = this;
+
       var confir = confirm("You want to delete the note ".concat(item.nombre));
 
       if (confir) {
         axios["delete"]("/notas/".concat(item.id)).then(function () {
-          homeworks.splice(index, 1);
+          _this4.homeworks.splice(index, 1);
         });
       }
+    },
+    cancelEdit: function cancelEdit() {
+      this.editActive = false;
+      this.homework = {
+        nombre: '',
+        descripcion: ''
+      };
     }
   }
 });
@@ -37399,7 +37408,27 @@ var render = function() {
               })
             ]),
             _vm._v(" "),
-            _vm._m(1)
+            _c("div", { staticClass: "form-group" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-secondary",
+                  attrs: { type: "submit" },
+                  on: {
+                    click: function($event) {
+                      return _vm.cancelEdit()
+                    }
+                  }
+                },
+                [_vm._v("Cancel")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                { staticClass: "btn btn-warning", attrs: { type: "submit" } },
+                [_vm._v("Save")]
+              )
+            ])
           ]
         )
       : _c(
@@ -37413,7 +37442,7 @@ var render = function() {
             }
           },
           [
-            _vm._m(2),
+            _vm._m(1),
             _vm._v(" "),
             _c("div", { staticClass: "form-group" }, [
               _c("input", {
@@ -37463,7 +37492,7 @@ var render = function() {
               })
             ]),
             _vm._v(" "),
-            _vm._m(3)
+            _vm._m(2)
           ]
         ),
     _vm._v(" "),
@@ -37536,24 +37565,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "form-group" }, [
       _c("h3", [_vm._v("Edit Homework!")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c(
-        "button",
-        { staticClass: "btn btn-secondary", attrs: { type: "submit" } },
-        [_vm._v("Cancel")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        { staticClass: "btn btn-warning", attrs: { type: "submit" } },
-        [_vm._v("Edit")]
-      )
     ])
   },
   function() {

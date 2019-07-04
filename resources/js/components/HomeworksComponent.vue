@@ -12,8 +12,8 @@
                 <input type="text" class="form-control" placeholder="Description" v-model="homework.descripcion">
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-secondary">Cancel</button>
-                <button type="submit" class="btn btn-warning">Edit</button>
+                <button type="submit" class="btn btn-secondary" @click="cancelEdit()">Cancel</button>
+                <button type="submit" class="btn btn-warning">Save</button>
             </div>
         </form>
 
@@ -91,7 +91,7 @@ export default {
         },
 
         editForm(item) {
-            this.editActive = false;
+            this.editActive = true;
             this.homework.nombre = item.nombre;
             this.homework.descripcion = item.descripcion;
             this.homework.id = item.id;
@@ -117,9 +117,14 @@ export default {
             if(confir) {
                 axios.delete(`/notas/${item.id}`)
                     .then(() => {
-                        homeworks.splice(index, 1);
+                        this.homeworks.splice(index, 1);
                     });
             }
+        },
+
+        cancelEdit() {
+            this.editActive = false;
+            this.homework = {nombre: '', descripcion: ''};
         }
     }
 }
