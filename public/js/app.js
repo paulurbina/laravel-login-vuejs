@@ -1906,6 +1906,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1913,7 +1932,8 @@ __webpack_require__.r(__webpack_exports__);
       homework: {
         nombre: '',
         descripcion: ''
-      }
+      },
+      editActive: false
     };
   },
   created: function created() {
@@ -1927,8 +1947,7 @@ __webpack_require__.r(__webpack_exports__);
     adding: function adding() {
       var _this2 = this;
 
-      console.log(this.homework.nombre, this.homework.descripcion);
-
+      // console.log(this.homework.nombre, this.homework.descripcion);
       if (this.homework.nombre.trim() === '' || this.homework.descripcion.trim() === '') {
         alert("Inputs imcomplete's!");
         return;
@@ -1944,7 +1963,30 @@ __webpack_require__.r(__webpack_exports__);
         _this2.homeworks.push(res.data);
       });
     },
-    deleteNote: function deleteNote(item, index) {
+    editForm: function editForm(item) {
+      this.editActive = false;
+      this.homework.nombre = item.nombre;
+      this.homework.descripcion = item.descripcion;
+      this.homework.id = item.id;
+    },
+    editHomework: function editHomework(homework) {
+      var _this3 = this;
+
+      var params = {
+        nombre: homework.nombre,
+        descripcion: homework.descripcion
+      };
+      axios.put("/notas/".concat(homework.id), params).then(function (res) {
+        _this3.editActive = false;
+
+        var index = _this3.homeworks.findIndex(function (item) {
+          item.id = homework.id;
+        });
+
+        _this3.homeworks[index] = res.data;
+      });
+    },
+    deleteHomework: function deleteHomework(item, index) {
       var confir = confirm("You want to delete the note ".concat(item.nombre));
 
       if (confir) {
@@ -37295,70 +37337,135 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("h3", [_vm._v("Test template")]),
-    _vm._v(" "),
-    _c(
-      "form",
-      {
-        on: {
-          submit: function($event) {
-            $event.preventDefault()
-            return _vm.adding($event)
-          }
-        }
-      },
-      [
-        _c("div", { staticClass: "form-group" }, [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.homework.nombre,
-                expression: "homework.nombre"
-              }
-            ],
-            staticClass: "form-control",
-            attrs: { type: "text", placeholder: "Name" },
-            domProps: { value: _vm.homework.nombre },
+    _vm.editActive
+      ? _c(
+          "form",
+          {
             on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.homework, "nombre", $event.target.value)
+              submit: function($event) {
+                $event.preventDefault()
+                return _vm.editHomework(_vm.homework)
               }
             }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group" }, [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.homework.descripcion,
-                expression: "homework.descripcion"
-              }
-            ],
-            staticClass: "form-control",
-            attrs: { type: "text", placeholder: "Description" },
-            domProps: { value: _vm.homework.descripcion },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
+          },
+          [
+            _vm._m(0),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.homework.nombre,
+                    expression: "homework.nombre"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text", placeholder: "Name" },
+                domProps: { value: _vm.homework.nombre },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.homework, "nombre", $event.target.value)
+                  }
                 }
-                _vm.$set(_vm.homework, "descripcion", $event.target.value)
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.homework.descripcion,
+                    expression: "homework.descripcion"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text", placeholder: "Description" },
+                domProps: { value: _vm.homework.descripcion },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.homework, "descripcion", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _vm._m(1)
+          ]
+        )
+      : _c(
+          "form",
+          {
+            on: {
+              submit: function($event) {
+                $event.preventDefault()
+                return _vm.adding($event)
               }
             }
-          })
-        ]),
-        _vm._v(" "),
-        _vm._m(0)
-      ]
-    ),
+          },
+          [
+            _vm._m(2),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.homework.nombre,
+                    expression: "homework.nombre"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text", placeholder: "Name" },
+                domProps: { value: _vm.homework.nombre },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.homework, "nombre", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.homework.descripcion,
+                    expression: "homework.descripcion"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text", placeholder: "Description" },
+                domProps: { value: _vm.homework.descripcion },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.homework, "descripcion", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _vm._m(3)
+          ]
+        ),
     _vm._v(" "),
     _c("hr"),
     _vm._v(" "),
@@ -37396,16 +37503,25 @@ var render = function() {
                 staticClass: "btn btn-danger btn-sm",
                 on: {
                   click: function($event) {
-                    return _vm.deleteNote(item, index)
+                    return _vm.deleteHomework(item, index)
                   }
                 }
               },
               [_vm._v("Delete")]
             ),
             _vm._v(" "),
-            _c("button", { staticClass: "btn btn-warning btn-sm" }, [
-              _vm._v("Edit")
-            ])
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-warning btn-sm",
+                on: {
+                  click: function($event) {
+                    return _vm.editForm(item)
+                  }
+                }
+              },
+              [_vm._v("Edit")]
+            )
           ]
         )
       }),
@@ -37414,6 +37530,40 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("h3", [_vm._v("Edit Homework!")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c(
+        "button",
+        { staticClass: "btn btn-secondary", attrs: { type: "submit" } },
+        [_vm._v("Cancel")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        { staticClass: "btn btn-warning", attrs: { type: "submit" } },
+        [_vm._v("Edit")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("h3", [_vm._v("Adding Homework!")])
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
