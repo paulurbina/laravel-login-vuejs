@@ -1902,6 +1902,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1939,6 +1943,15 @@ __webpack_require__.r(__webpack_exports__);
       axios.post('/notas', params).then(function (res) {
         _this2.homeworks.push(res.data);
       });
+    },
+    deleteNote: function deleteNote(item, index) {
+      var confir = confirm("You want to delete the note ".concat(item.nombre));
+
+      if (confir) {
+        axios["delete"]("/notas/".concat(item.id)).then(function () {
+          homeworks.splice(index, 1);
+        });
+      }
     }
   }
 });
@@ -37362,9 +37375,37 @@ var render = function() {
             staticClass: "list-group-item list-group-item-secondary"
           },
           [
-            _c("p", [_vm._v(_vm._s(item.nombre))]),
+            _c("span", { staticClass: "bagde badge-info float-right" }, [
+              _vm._v("Create: " + _vm._s(item.created_at) + " ")
+            ]),
             _vm._v(" "),
-            _c("p", [_vm._v(_vm._s(item.descripcion))])
+            _c(
+              "p",
+              {
+                staticClass: "badge badge-light",
+                staticStyle: { "font-size": "18px" }
+              },
+              [_vm._v(_vm._s(item.nombre))]
+            ),
+            _vm._v(" "),
+            _c("p", [_vm._v(_vm._s(item.descripcion))]),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-danger btn-sm",
+                on: {
+                  click: function($event) {
+                    return _vm.deleteNote(item, index)
+                  }
+                }
+              },
+              [_vm._v("Delete")]
+            ),
+            _vm._v(" "),
+            _c("button", { staticClass: "btn btn-warning btn-sm" }, [
+              _vm._v("Edit")
+            ])
           ]
         )
       }),
@@ -37380,7 +37421,7 @@ var staticRenderFns = [
     return _c("div", { staticClass: "form-group" }, [
       _c(
         "button",
-        { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+        { staticClass: "btn btn-success", attrs: { type: "submit" } },
         [_vm._v("Adding")]
       )
     ])

@@ -9,7 +9,7 @@
                 <input type="text" class="form-control" placeholder="Description" v-model="homework.descripcion">
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-primary">Adding</button>
+                <button type="submit" class="btn btn-success">Adding</button>
             </div>
         </form>
 
@@ -18,10 +18,14 @@
         <h3>List Notes</h3>
 
         <ol class="list-group">
+           
             <li class="list-group-item list-group-item-secondary"
                 v-for="(item, index) in homeworks" :key="index">
-                <p>{{item.nombre}}</p>
+                 <span class="bagde badge-info float-right">Create: {{item.created_at}} </span>
+                <p class="badge badge-light" style="font-size: 18px;">{{item.nombre}}</p>
                 <p>{{item.descripcion}}</p>
+                <button class="btn btn-danger btn-sm" @click="deleteNote(item, index)">Delete</button>
+                <button class="btn btn-warning btn-sm">Edit</button>
             </li>
         </ol>
 
@@ -64,6 +68,15 @@ export default {
                     this.homeworks.push(res.data);
                 });
          
+        },
+        deleteNote(item, index) {
+            const confir = confirm(`You want to delete the note ${item.nombre}`);
+            if(confir) {
+                axios.delete(`/notas/${item.id}`)
+                    .then(() => {
+                        homeworks.splice(index, 1);
+                    });
+            }
         }
     }
 }
