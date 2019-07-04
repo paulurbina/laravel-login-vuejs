@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="container">
         <!-- form edited homework -->
         <form @submit.prevent="editHomework(homework)" v-if="editActive">
            <div class="form-group">
@@ -89,14 +89,12 @@ export default {
                 });
          
         },
-
         editForm(item) {
             this.editActive = true;
             this.homework.nombre = item.nombre;
             this.homework.descripcion = item.descripcion;
             this.homework.id = item.id;
         },
-
         editHomework(homework) {
             const params = {
                 nombre: homework.nombre,
@@ -106,12 +104,18 @@ export default {
                 .then(res => {
                     this.editActive = false;
                     const index = this.homeworks.findIndex((item) => {
-                        item.id = homework.id; 
+                        item.id === res.data.id; 
                     });
                     this.homeworks[index] = res.data;
-                })
-        },
 
+                    axios.get('/notas')
+                        .then(res => {
+                            this.homeworks = res.data;
+                            this.homework = {nombre: '', descripcion: ''};
+
+                    });
+                });
+        },
         deleteHomework(item, index) {
             const confir = confirm(`You want to delete the note ${item.nombre}`);
             if(confir) {
@@ -121,7 +125,6 @@ export default {
                     });
             }
         },
-
         cancelEdit() {
             this.editActive = false;
             this.homework = {nombre: '', descripcion: ''};

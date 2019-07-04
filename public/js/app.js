@@ -1980,10 +1980,17 @@ __webpack_require__.r(__webpack_exports__);
         _this3.editActive = false;
 
         var index = _this3.homeworks.findIndex(function (item) {
-          item.id = homework.id;
+          item.id === res.data.id;
         });
 
         _this3.homeworks[index] = res.data;
+        axios.get('/notas').then(function (res) {
+          _this3.homeworks = res.data;
+          _this3.homework = {
+            nombre: '',
+            descripcion: ''
+          };
+        });
       });
     },
     deleteHomework: function deleteHomework(item, index) {
@@ -37345,7 +37352,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
+  return _c("div", { staticClass: "container" }, [
     _vm.editActive
       ? _c(
           "form",
